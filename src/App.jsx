@@ -1,60 +1,73 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
-// Auth
 import SignIn from "./pages/SignIn";
+import ProtectedRoute from "./components/ProtectedRoute";
+import DashboardLayout from "./layout/DashboardLayout";
 
-// Layouts
-import AdminLayout from "./layout/AdminLayout";
-import ManagerLayout from "./layout/ManagerLayout";
-import StaffLayout from "./layout/StaffLayout";
+// Admin
+import AdminDashboard from "./pages/Admin/AdminDashboard";
+import Users from "./pages/Admin/Users";
+import AdminInventory from "./pages/Admin/Inventory";
+import AdminReports from "./pages/Admin/Reports";
 
-// Admin Pages
-import AdminDashboard from "./components/Admin/AdminDashboard";
-import Users from "./components/Admin/Users";
-import AdminInventory from "./components/Admin/Inventory";
-import AdminReports from "./components/Admin/Reports";
+// Manager
+import ManagerDashboard from "./pages/Manager/ManagerDashboard";
+import ManagerReports from "./pages/Manager/Reports";
+import Analytics from "./pages/Manager/Analytics";
+import Products from "./pages/Manager/Products";
+import Suppliers from "./pages/Manager/Suppliers";
+import ManagerSales from "./pages/Manager/Sales";
+import Setting from "./pages/Manager/Setting";
 
-// Manager Pages
-import ManagerDashboard from "./components/Manager/ManagerDashboard";
-import ManagerReports from "./components/Manager/Reports";
-import Analytics from "./components/Manager/Analytics";
-
-// Staff Pages
-import StaffDashboard from "./components/Staff/StaffDashboard";
-import StaffInventory from "./components/Staff/Inventory";
-import Sales from "./components/Staff/Sales";
+// Staff
+import StaffDashboard from "./pages/Staff/StaffDashboard";
+import StaffInventory from "./pages/Staff/Inventory";
+import Sales from "./pages/Staff/Sales";
+import AddEditProduct from "./components/AddEditProduct";
+import AddSupplier from "./components/AddSupplier";
 
 const App = () => {
   return (
     <Routes>
-      {/* 🔐 Auth */}
+      {/* Auth */}
       <Route path="/" element={<SignIn />} />
 
-      {/* 👑 Admin */}
-      <Route path="/admin" element={<AdminLayout />}>
-        <Route index element={<AdminDashboard />} />
-        <Route path="users" element={<Users />} />
-        <Route path="inventory" element={<AdminInventory />} />
-        <Route path="reports" element={<AdminReports />} />
+      {/* ALL DASHBOARD ROUTES */}
+      <Route
+        element={
+          <ProtectedRoute allowedRoles={["admin", "manager", "staff"]}>
+            <DashboardLayout />
+          </ProtectedRoute>
+        }
+      >
+        {/* Admin */}
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/users" element={<Users />} />
+        <Route path="/admin/inventory" element={<AdminInventory />} />
+        <Route path="/admin/reports" element={<AdminReports />} />
+
+        {/* Manager */}
+        <Route path="/manager">
+          <Route index element={<ManagerDashboard />} />
+          <Route path="products" element={<Products />} />
+          <Route path="products/add" element={<AddEditProduct />} />
+          <Route path="products/edit/:id" element={<AddEditProduct />} />
+          <Route path="suppliers" element={<Suppliers />} />
+          <Route path="suppliers/add" element={<AddSupplier />} />
+          <Route path="sales" element={<ManagerSales />} />
+          <Route path="reports" element={<ManagerReports />} />
+          <Route path="setting" element={<Setting />} />
+        </Route>
+
+        {/* Staff */}
+        <Route path="/staff" element={<StaffDashboard />} />
+        <Route path="/staff/inventory" element={<StaffInventory />} />
+        <Route path="/staff/sales" element={<Sales />} />
       </Route>
 
-      {/* 📊 Manager */}
-      <Route path="/manager" element={<ManagerLayout />}>
-        <Route index element={<ManagerDashboard />} />
-        <Route path="reports" element={<ManagerReports />} />
-        <Route path="analytics" element={<Analytics />} />
-      </Route>
-
-      {/* 📦 Staff */}
-      <Route path="/staff" element={<StaffLayout />}>
-        <Route index element={<StaffDashboard />} />
-        <Route path="inventory" element={<StaffInventory />} />
-        <Route path="sales" element={<Sales />} />
-      </Route>
-
-      {/* ❌ 404 */}
-      <Route path="*" element={<h1>Page Not Found</h1>} />
+      {/* 404 */}
+      <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
 };
