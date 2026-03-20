@@ -1,9 +1,19 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, LogOut } from "lucide-react";
 
 export default function Sidebar({ role }) {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Clear auth data
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+
+    // Redirect to login
+    navigate("/login");
+  };
 
   const menu = {
     admin: [
@@ -18,11 +28,10 @@ export default function Sidebar({ role }) {
       { name: "Suppliers", path: "/manager/suppliers" },
       { name: "Sales", path: "/manager/sales" },
       { name: "Reports", path: "/manager/reports" },
-      { name: "Setting", path: "/manager/setting" },
     ],
     staff: [
       { name: "Dashboard", path: "/staff" },
-      { name: "Inventory", path: "/staff/inventory" },
+      { name: "Products", path: "/staff/inventory" },
       { name: "Sales", path: "/staff/sales" },
     ],
   };
@@ -39,32 +48,46 @@ export default function Sidebar({ role }) {
 
       {/* Sidebar */}
       <div
-  className={`fixed top-0 left-0 h-screen w-64 bg-black text-white p-4 transform transition-transform duration-300 z-50
-  ${open ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
->
-        <h2 className="text-xl font-semibold mb-6 hidden md:block">
-          Inventory Pro
-        </h2>
+        className={`fixed top-0 left-0 h-screen w-64 bg-black text-white p-4 flex flex-col justify-between transform transition-transform duration-300 z-50
+        ${open ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
+      >
+        <div>
+          <h2 className="text-xl font-semibold mb-6 hidden md:block">
+            Inventory Pro
+          </h2>
 
-        <ul className="space-y-3">
-          {menu[role]?.map((item, index) => (
-            <li key={index}>
-              <NavLink
-                to={item.path}
-                onClick={() => setOpen(false)}
-                className={({ isActive }) =>
-                  `block px-3 py-2 rounded transition ${
-                    isActive
-                      ? "bg-gray-800 font-semibold"
-                      : "hover:bg-gray-800"
-                  }`
-                }
-              >
-                {item.name}
-              </NavLink>
-            </li>
-          ))}
-        </ul>
+          <ul className="space-y-3">
+            {menu[role]?.map((item, index) => (
+              <li key={index}>
+                <NavLink
+                  to={item.path}
+                  onClick={() => setOpen(false)}
+                  className={({ isActive }) =>
+                    `block px-3 py-2 rounded transition ${
+                      isActive
+                        ? "bg-gray-800 font-semibold"
+                        : "hover:bg-gray-800"
+                    }`
+                  }
+                >
+                  {item.name}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* 🔴 Logout Button */}
+        <button
+          onClick={() => {
+            handleLogout();
+            setOpen(false);
+          }}
+          className="flex items-center gap-2 px-3 py-2 rounded hover:bg-red-600 transition bg-red-500 mt-4"
+        >
+          <LogOut size={18} />
+          Logout
+        </button>
       </div>
 
       {/* Overlay */}

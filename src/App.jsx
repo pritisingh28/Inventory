@@ -22,8 +22,10 @@ import Setting from "./pages/Manager/Setting";
 
 // Staff
 import StaffDashboard from "./pages/Staff/StaffDashboard";
-import StaffInventory from "./pages/Staff/Inventory";
-import Sales from "./pages/Staff/Sales";
+import StaffProduct from "./pages/Staff/StaffProducts";
+import StaffSales from "./pages/Staff/StaffSales";
+
+// Components
 import AddEditProduct from "./components/AddEditProduct";
 import AddSupplier from "./components/AddSupplier";
 
@@ -41,15 +43,29 @@ const App = () => {
           </ProtectedRoute>
         }
       >
-        {/* Admin */}
-        <Route path="/admin" element={<AdminDashboard />} />
+        {/* ================= ADMIN ================= */}
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/admin/users" element={<Users />} />
         <Route path="/admin/inventory" element={<AdminInventory />} />
         <Route path="/admin/reports" element={<AdminReports />} />
 
-        {/* Manager */}
+        {/* ================= MANAGER ================= */}
         <Route path="/manager">
-          <Route index element={<ManagerDashboard />} />
+          <Route
+            index
+            element={
+              <ProtectedRoute allowedRoles={["manager"]}>
+                <ManagerDashboard />
+              </ProtectedRoute>
+            }
+          />
           <Route path="products" element={<Products />} />
           <Route path="products/add" element={<AddEditProduct />} />
           <Route path="products/edit/:id" element={<AddEditProduct />} />
@@ -60,10 +76,36 @@ const App = () => {
           <Route path="setting" element={<Setting />} />
         </Route>
 
-        {/* Staff */}
-        <Route path="/staff" element={<StaffDashboard />} />
-        <Route path="/staff/inventory" element={<StaffInventory />} />
-        <Route path="/staff/sales" element={<Sales />} />
+        {/* ================= STAFF ================= */}
+        <Route path="/staff">
+          {/* Default → Dashboard */}
+          <Route
+            index
+            element={
+              <ProtectedRoute allowedRoles={["staff"]}>
+                <StaffDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="inventory"
+            element={
+              <ProtectedRoute allowedRoles={["staff"]}>
+                <StaffProduct />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="sales"
+            element={
+              <ProtectedRoute allowedRoles={["staff"]}>
+                <StaffSales />
+              </ProtectedRoute>
+            }
+          />
+        </Route>
       </Route>
 
       {/* 404 */}

@@ -12,13 +12,31 @@ export const login = async (email, password) => {
 };
 
 // 📝 REGISTER
-export const register = async (name, email, password, role) => {
+export const register = async (username, email, password, role) => {
   const res = await axios.post(`${baseUrl}/auth/register`, {
-    name,
+    username,
     email,
     password,
     role,
   });
 
   return res.data;
+};
+
+// 🚪 LOGOUT WITH API
+export const logout = async () => {
+  const token = localStorage.getItem("token");
+
+  await axios.post(
+    `${baseUrl}/auth/logout`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  localStorage.removeItem("token");
+  localStorage.removeItem("role");
 };

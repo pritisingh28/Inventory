@@ -8,10 +8,10 @@ export default function AuthPage() {
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
-    name: "",
+    username: "",
     email: "",
     password: "",
-    role: "staff",
+    role: "Staff",
   });
 
   const handleChange = (e) => {
@@ -39,15 +39,9 @@ export default function AuthPage() {
         } else {
           navigate("/staff");
         }
-
       } else {
         // 📝 REGISTER
-        await register(
-          form.name,
-          form.email,
-          form.password,
-          form.role
-        );
+        await register(form.username, form.email, form.password, form.role);
 
         alert("Registered Successfully");
 
@@ -62,11 +56,9 @@ export default function AuthPage() {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
-
       {/* LEFT */}
       <div className="w-full md:w-1/2 flex items-center justify-center p-8">
         <div className="w-full max-w-md">
-
           <div className="flex flex-col items-center mb-6">
             <div className="bg-black p-3 rounded-xl mb-3">
               <img src={box} className="w-6 h-6 invert" />
@@ -77,23 +69,21 @@ export default function AuthPage() {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-
             {!isLogin && (
               <>
                 <input
-                  name="name"
+                  name="username"
                   placeholder="Full Name"
                   onChange={handleChange}
                   className="w-full px-3 py-2 border rounded"
                 />
-
                 <select
                   name="role"
                   onChange={handleChange}
                   className="w-full px-3 py-2 border rounded"
                 >
-                  <option value="staff">Staff</option>
-                  <option value="manager">Manager</option>
+                  <option value="Staff">Staff</option>
+                  <option value="Manager">Manager</option>
                 </select>
               </>
             )}
@@ -127,7 +117,6 @@ export default function AuthPage() {
               {isLogin ? "Register" : "Login"}
             </button>
           </p>
-
         </div>
       </div>
 
