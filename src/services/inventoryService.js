@@ -22,7 +22,7 @@ export const updateProduct = async (id, data) => {
 
 // DELETE
 export const deleteProduct = async (id) => {
-  const res = await axios.delete(`${baseUrl}/product/${id}`);
+  const res = await axios.delete(`${baseUrl}/product/delete/${id}`);
   return res.data;
 };
 

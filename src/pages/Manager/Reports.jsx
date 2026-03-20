@@ -66,7 +66,7 @@ const Reports = () => {
     </div>
 
     {/* Buttons */}
-    <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
+    {/* <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
       <button className="border px-4 py-2 rounded-lg flex gap-2 items-center justify-center w-full sm:w-auto">
         <Download size={16} /> Export PDF
       </button>
@@ -74,7 +74,7 @@ const Reports = () => {
       <button className="border px-4 py-2 rounded-lg flex gap-2 items-center justify-center w-full sm:w-auto">
         <Download size={16} /> Export Excel
       </button>
-    </div>
+    </div> */}
   </div>
 
   {/* Filter */}
