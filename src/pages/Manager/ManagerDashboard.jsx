@@ -76,7 +76,7 @@ const ManagerDashboard = () => {
 
   const interval = setInterval(() => {
     fetchData();
-  }, 1000); // 10 sec
+  },); // 10 sec
 
   return () => clearInterval(interval);
 }, []);
